@@ -1,0 +1,78 @@
+﻿@model COMP_2007_Assignment1.Controllers.Series
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Html.DisplayFor(model => model.SeriesName)  Details</h2>
+
+<div>
+    <hr />
+    <img src=@Html.DisplayFor(model => model.CoverArtURL) />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SeriesName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SeriesName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Genre1.GenreName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Genre1.GenreName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Synopsis)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Synopsis)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RunStartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RunStartDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Producer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Producer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Raiting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Raiting)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.CoverArtURL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CoverArtURL)
+        </dd>*@
+
+    </dl>
+    
+</div>
+<p>
+    <button type="button" class="btn btn-warning">@Html.ActionLink("Edit", "Edit", new { id = Model.SeriesID })</button>
+    <button type="button" class="btn btn-default">@Html.ActionLink("Back to List", "Index")</button>
+</p>
+<p class="ref">
+    The Synopsis comes from the MAL Rewrite team at myanimelist.net.
+</p>

@@ -1,6 +1,9 @@
-﻿body {
+﻿/* Changed color and background-color */
+body {
     padding-top: 50px;
     padding-bottom: 20px;
+    color: #f4f4f4;
+    background-color: #303030;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -21,4 +24,21 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+/* Bootstrap CSS Overides */
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: #8d8787;
+}
+.jumbotron {
+    color: #000000;
+    background-color: #d8d8d8;
+}
+
+.btn btn-primary {
+    color: #fbfbfb;
+}
+/* custom class */
+.ref {
+    font-size: small; 
 }

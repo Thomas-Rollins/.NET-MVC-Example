@@ -1,0 +1,71 @@
+﻿@model IEnumerable<COMP_2007_Assignment1.Controllers.Series>
+@{
+
+    ViewBag.Title = "Browse";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var first = Enumerable.FirstOrDefault(Model);
+    @* Catch Null Exception for the case when here are no shows in the genre*@
+    String genreName;
+    try { genreName = first.Genre1.GenreName; }
+    catch(NullReferenceException)
+    {
+        genreName = "";
+    }
+}
+
+<h2>
+    Browsing Genre: @genreName
+</h2>
+
+<p>
+    <button type="button" class="btn btn-success">@Html.ActionLink("Create New", "Create")</button>
+</p>
+<table class="table table-hover">
+    <tr>
+        <th>
+            Series Title
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Genre)
+        </th>
+        <th>
+            Starting Date
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Producer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Raiting)
+        </th>
+        <th>Actions</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SeriesName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Genre1.GenreName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RunStartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Producer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Raiting)
+            </td>
+            <td>
+                <button type="button" class="btn btn-warning">@Html.ActionLink("Edit", "Edit", new { id = item.SeriesID })</button>
+                <button type="button" class="btn btn-info">@Html.ActionLink("Details", "Details", new { id = item.SeriesID })</button>
+                <button type="button" class="btn btn-danger">@Html.ActionLink("Delete", "Delete", new { id = item.SeriesID })</button>
+            </td>
+        </tr>
+    }
+
+</table>
+<button type="button" class="btn btn-secondary">@Html.ActionLink("Return to Genres", "Index", "Genres")</button>
+
