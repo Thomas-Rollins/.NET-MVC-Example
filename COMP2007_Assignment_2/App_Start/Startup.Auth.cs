@@ -47,17 +47,17 @@ namespace COMP2007_Assignment_2
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
             // Uncomment the following lines to enable logging in with third party login providers
-            //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
+            app.UseMicrosoftAccountAuthentication(
+                clientId: ConfigurationManager.AppSettings["MicrosoftClientId"],
+                clientSecret: ConfigurationManager.AppSettings["MicrosoftClientSecret"]);
 
-            //app.UseTwitterAuthentication(
-            //   consumerKey: "",
-            //   consumerSecret: "");
+            app.UseTwitterAuthentication(
+               consumerKey: ConfigurationManager.AppSettings["TwitterClientId"],
+               consumerSecret: ConfigurationManager.AppSettings["TwitterClientKey"]);
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: ConfigurationManager.AppSettings["FacebookClientId"],
+               appSecret: ConfigurationManager.AppSettings["FacebookClientKey"]); 
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
