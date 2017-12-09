@@ -70,7 +70,10 @@
     
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.SeriesID }, new { @class = "btn btn-warning" })
+    @if (Request.IsAuthenticated)
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.SeriesID }, new { @class = "btn btn-warning" })
+    }
     @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
 </p>
 <p class="ref">

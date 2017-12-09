@@ -29,6 +29,9 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.GenreID }, new { @class = "btn btn-warning" })
+    @if (Request.IsAuthenticated)
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.GenreID }, new { @class = "btn btn-warning" })
+    }
     @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
 </p>

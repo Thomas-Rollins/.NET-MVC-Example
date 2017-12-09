@@ -6,10 +6,12 @@
 }
 
 <h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-success" })
-</p>
+@if (Request.IsAuthenticated)
+{
+    <p>
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-success" })
+    </p>
+}
 <table class="table table-hover">
     <tr>
         <th>
@@ -30,9 +32,12 @@
             @Html.DisplayFor(modelItem => item.GenreDescription)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.GenreID }, new { @class = "btn btn-warning" })
-            @Html.ActionLink("Details", "Details", new { id=item.GenreID }, new { @class = "btn btn-info" })
-            @Html.ActionLink("Delete", "Delete", new { id=item.GenreID }, new { @class = "btn btn-danger" })
+            @Html.ActionLink("Details", "Details", new { id = item.GenreID }, new { @class = "btn btn-info" })
+            @if (Request.IsAuthenticated)
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = item.GenreID }, new { @class = "btn btn-warning" })
+                @Html.ActionLink("Delete", "Delete", new { id = item.GenreID }, new { @class = "btn btn-danger" })
+            }
         </td>
     </tr>
 }
