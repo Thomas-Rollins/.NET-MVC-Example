@@ -8,7 +8,7 @@
 <h2>Index</h2>
 
 <p>
-    <button type="button" class="btn btn-success">@Html.ActionLink("Create New", "Create")</button>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-success" })
 </p>
 <table class="table table-hover">
     <tr>
@@ -48,9 +48,9 @@
             @Html.DisplayFor(modelItem => item.Raiting)
         </td>
         <td>
-            <button type="button" class="btn btn-warning">@Html.ActionLink("Edit", "Edit", new { id = item.SeriesID })</button>
-            <button type="button" class="btn btn-info">@Html.ActionLink("Details", "Details", new { id = item.SeriesID })</button>
-            <button type="button" class="btn btn-danger">@Html.ActionLink("Delete", "Delete", new { id = item.SeriesID })</button>
+            @Html.ActionLink("Edit", "Edit", new { id = item.SeriesID }, new { @class = "btn btn-warning" })
+            @Html.ActionLink("Details", "Details", new { id = item.SeriesID }, new { @class = "btn btn-info" })
+            @Html.ActionLink("Delete", "Delete", new { id = item.SeriesID }, new { @class = "btn btn-danger" })
         </td>
     </tr>
 }

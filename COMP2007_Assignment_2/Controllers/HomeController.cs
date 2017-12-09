@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace COMP2007_Assignment_2.Controllers
 {
+    [RequireHttps]
     public class HomeController : Controller
     {
         public ActionResult Index()

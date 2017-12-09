@@ -10,11 +10,13 @@ using COMP_2007_Assignment1.Controllers;
 
 namespace COMP_2007_Assignment1.Models
 {
+    [Authorize]
     public class GenresController : Controller
     {
         private ShowList db = new ShowList();
 
         // GET: Genres
+        [AllowAnonymous]
         public ActionResult Index()
         {
             var genres = from g in db.Genres
@@ -25,6 +27,7 @@ namespace COMP_2007_Assignment1.Models
 
 
         // GET: Genres/Details/5
+        [AllowAnonymous]
         public ActionResult Details(int? id)
         {
             if (id == null)

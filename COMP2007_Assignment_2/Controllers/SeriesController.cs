@@ -10,11 +10,13 @@ using COMP_2007_Assignment1.Controllers;
 
 namespace COMP_2007_Assignment1.Models
 {
+    [Authorize]
     public class SeriesController : Controller
     {
         private ShowList db = new ShowList();
 
         // GET: Series
+        [AllowAnonymous]
         public ActionResult Index()
         {
             var series = db.Series.Include(s => s.Genre1);
@@ -22,6 +24,7 @@ namespace COMP_2007_Assignment1.Models
         }
 
         // GET: Series/Details/5
+        [AllowAnonymous]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,6 +40,7 @@ namespace COMP_2007_Assignment1.Models
         }
 
         // GET: Series/Browse/5
+        [AllowAnonymous]
         public ActionResult Browse(int? id)
         {
             if (id == null)
