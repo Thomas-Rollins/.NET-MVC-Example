@@ -16,4 +16,7 @@ Included Twitter OAuths as a bonus to the original Google, Microsoft, and FaceBo
 When a user is annonomus the authorized-only links (create/edit/delete) are hidden.
 There is no 'admin' role. It is assumed all authenticated users are able to create/edit/delete.
 
+### Part 2
+Added Unit Testing on SeriesController.cs (100% Coverage)
+
 Live Site: https://comp2007-assignment2-200344886.azurewebsites.net/
