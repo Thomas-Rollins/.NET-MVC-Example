@@ -7,45 +7,66 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using COMP_2007_Assignment1.Controllers;
+using COMP2007_Assignment_2.Models;
 
 namespace COMP_2007_Assignment1.Models
 {
     [Authorize]
     public class SeriesController : Controller
     {
-        private ShowList db = new ShowList();
+        private ISeriesRepository db;
+
+        public SeriesController()
+        {
+            this.db = new EFSeriesRepository();
+        }
+
+        public SeriesController(ISeriesRepository smRepo)
+        {
+            this.db = smRepo;
+        }
+
+        private List<Series> FetchIndexData()
+        {
+            var Series = db.Series.Include(s => s.Genre1);
+
+            //ViewBag.SeriesCount = Series.Count();
+
+            return (Series.OrderBy(s => s.SeriesName).ToList());
+        }
 
         // GET: Series
         [AllowAnonymous]
-        public ActionResult Index()
+        public ViewResult Index()
         {
-            var series = db.Series.Include(s => s.Genre1);
-            return View(series.ToList());
+            var series = FetchIndexData();
+            return View(series);
         }
 
         // GET: Series/Details/5
         [AllowAnonymous]
-        public ActionResult Details(int? id)
+        public ViewResult Details(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return View("Error");
             }
-            Series series = db.Series.Find(id);
+            Series series = db.Series.FirstOrDefault(s => s.SeriesID == id);
             if (series == null)
             {
-                return HttpNotFound();
+                return View("Error");
             }
+            
             return View(series);
         }
 
         // GET: Series/Browse/5
         [AllowAnonymous]
-        public ActionResult Browse(int? id)
+        public ViewResult Browse(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return View("Error");
             }
             //Series series = db.Series.Find(id);
             var series = from s in db.Series
@@ -57,10 +78,10 @@ namespace COMP_2007_Assignment1.Models
         }
 
         // GET: Series/Create
-        public ActionResult Create()
+        public ViewResult Create()
         {
             ViewBag.Genre = new SelectList(db.Genres, "GenreID", "GenreName");
-            return View();
+            return View("Create");
         }
 
         // POST: Series/Create
@@ -68,30 +89,56 @@ namespace COMP_2007_Assignment1.Models
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "SeriesID,SeriesName,Synopsis,RunStartDate,Producer,Raiting,CoverArtURL,Genre")] Series series)
+        public ViewResult Create([Bind(Include = "SeriesID,SeriesName,Synopsis,RunStartDate,Producer,Raiting,CoverArtURL,Genre")] Series series)
         {
-            if (ModelState.IsValid)
+            if (series == null)
             {
-                db.Series.Add(series);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                ViewBag.ArtistId = new SelectList(db.Series, "SeriesID", "SeriesName");
+                ViewBag.GenreId = new SelectList(db.Genres, "GenreID", "GenreName");
+                return View("Create");
             }
 
-            ViewBag.Genre = new SelectList(db.Genres, "GenreID", "GenreName", series.Genre);
+            if (ModelState.IsValid)
+            {
+                if (Request != null)
+                {
+                    // check for a new cover image upload
+                    if (Request.Files.Count > 0)
+                    {
+                        var file = Request.Files[0];
+
+                        if (file.FileName != null && file.ContentLength > 0)
+                        {
+                            string path = Server.MapPath("~/Content/Images/") + file.FileName;
+                            file.SaveAs(path);
+
+                            // add path to image name before saving
+                            series.CoverArtURL = "/Content/Images/" + file.FileName;
+                        }
+                    }
+                }
+                
+                db.Save(series);
+                var albums = FetchIndexData();
+                return View("Index", series);
+
+            }
+            ViewBag.SeriesID = new SelectList(db.Series, "SeriesId", "SeriesName", series.SeriesID);
+            ViewBag.GenreID = new SelectList(db.Genres, "GenreID", "GenreName", series.Genre);
             return View(series);
         }
 
         // GET: Series/Edit/5
-        public ActionResult Edit(int? id)
+        public ViewResult Edit(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return View("Error");
             }
-            Series series = db.Series.Find(id);
+            Series series = db.Series.FirstOrDefault(s => s.SeriesID == id);
             if (series == null)
             {
-                return HttpNotFound();
+                return View("Error");
             }
             ViewBag.Genre = new SelectList(db.Genres, "GenreID", "GenreName", series.Genre);
             return View(series);
@@ -106,25 +153,29 @@ namespace COMP_2007_Assignment1.Models
         {
             if (ModelState.IsValid)
             {
-                db.Entry(series).State = EntityState.Modified;
-                db.SaveChanges();
+                if (series == null)
+                {
+                    return View("Error");
+                }
+                db.Save(series);
                 return RedirectToAction("Index");
             }
-            ViewBag.Genre = new SelectList(db.Genres, "GenreID", "GenreName", series.Genre);
-            return View(series);
+            ViewBag.SeriesID = new SelectList(db.Series, "SeriesID", "SeriesName");
+            ViewBag.GenreID = new SelectList(db.Genres, "GenreID", "GenreName", series.Genre);
+            return View("Edit");
         }
 
         // GET: Series/Delete/5
-        public ActionResult Delete(int? id)
+        public ViewResult Delete(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return View("Error");
             }
-            Series series = db.Series.Find(id);
+            Series series = db.Series.FirstOrDefault(s => s.SeriesID == id);
             if (series == null)
             {
-                return HttpNotFound();
+                return View("Error");
             }
             return View(series);
         }
@@ -132,21 +183,29 @@ namespace COMP_2007_Assignment1.Models
         // POST: Series/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ViewResult DeleteConfirmed(int? id)
         {
-            Series series = db.Series.Find(id);
-            db.Series.Remove(series);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if(id == null)
+            {
+                return View("Error");
+            }
+
+            Series series = db.Series.FirstOrDefault(s => s.SeriesID == id);
+            if(series == null)
+            {
+                return View("Error");
+            }
+            db.Delete(series);
+            return View("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        db.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
     }
 }
