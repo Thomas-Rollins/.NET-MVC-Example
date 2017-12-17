@@ -9,7 +9,6 @@ namespace COMP2007_Assignment_2.Models
 {
     public interface ISeriesRepository
     {
-        //may need to add genres
         IQueryable<Series> Series { get; }
         IQueryable<Genre> Genres { get; }
         Series Save(Series series);

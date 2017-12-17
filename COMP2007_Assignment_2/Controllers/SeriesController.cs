@@ -103,19 +103,19 @@ namespace COMP_2007_Assignment1.Models
                 if (Request != null)
                 {
                     // check for a new cover image upload
-                    if (Request.Files.Count > 0)
-                    {
-                        var file = Request.Files[0];
+                    //if (Request.Files.Count > 0)
+                    //{
+                    //    var file = Request.Files[0];
 
-                        if (file.FileName != null && file.ContentLength > 0)
-                        {
-                            string path = Server.MapPath("~/Content/Images/") + file.FileName;
-                            file.SaveAs(path);
+                    //    if (file.FileName != null && file.ContentLength > 0)
+                    //    {
+                    //        string path = Server.MapPath("~/Content/Images/") + file.FileName;
+                    //        file.SaveAs(path);
 
-                            // add path to image name before saving
-                            series.CoverArtURL = "/Content/Images/" + file.FileName;
-                        }
-                    }
+                    //        // add path to image name before saving
+                    //        series.CoverArtURL = "/Content/Images/" + file.FileName;
+                    //    }
+                    //}
                 }
                 
                 db.Save(series);
