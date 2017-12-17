@@ -119,8 +119,8 @@ namespace COMP_2007_Assignment1.Models
                 }
                 
                 db.Save(series);
-                var albums = FetchIndexData();
-                return View("Index", series);
+                var seri = FetchIndexData();
+                return View("Index", seri);
 
             }
             ViewBag.SeriesID = new SelectList(db.Series, "SeriesId", "SeriesName", series.SeriesID);
@@ -196,16 +196,9 @@ namespace COMP_2007_Assignment1.Models
                 return View("Error");
             }
             db.Delete(series);
-            return View("Index");
-        }
 
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        db.Dispose();
-        //    }
-        //    base.Dispose(disposing);
-        //}
+            var seri = FetchIndexData();
+            return View("Index", seri);
+        }
     }
 }
